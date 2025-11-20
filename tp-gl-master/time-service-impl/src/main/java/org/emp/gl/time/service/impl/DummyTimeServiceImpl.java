@@ -16,7 +16,7 @@ import org.emp.gl.timer.service.TimerService;
 
 /**
  *
- * @author tina
+ * @author hadil
  */
 public class DummyTimeServiceImpl
         implements TimerService {
@@ -59,17 +59,21 @@ public class DummyTimeServiceImpl
 
     @Override
     public void addTimeChangeListener(TimerChangeListener pl) {
-        // TODO
-        listeners.add(pl) ;
+        if (!listeners.contains(pl)) {
+            listeners.add(pl);
+            System.out.println(" Observateur ajouté " );
+        }
     }
 
     @Override
     public void removeTimeChangeListener(TimerChangeListener pl) {
-        // TODO
-        listeners.remove(pl) ;
+        if (listeners.remove(pl)) {
+            System.out.println(" Observateur retiré ");
+    }
     }
 
-    private void timeChanged() {
+    private void timeChanged() 
+    {
         setTimeValues();
     }
 
@@ -124,7 +128,7 @@ public class DummyTimeServiceImpl
     private void minutesChanged(int oldValue, int minutes) {
        for (TimerChangeListener l : listeners) {
            l.propertyChange(TimerChangeListener.MINUTE_PROP,
-                   oldValue, secondes);
+                   oldValue, minutes);
        }
     }
 
@@ -141,10 +145,10 @@ public class DummyTimeServiceImpl
     private void heuresChanged(int oldValue, int heures) {
        for (TimerChangeListener l : listeners) {
            l.propertyChange(TimerChangeListener.HEURE_PROP,
-                   oldValue, secondes);
+                   oldValue, heures);
        }
     }
-
+    
 
     @Override
     public int getDixiemeDeSeconde() {
